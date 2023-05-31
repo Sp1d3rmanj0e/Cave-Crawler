@@ -1,0 +1,51 @@
+/ + Inticates the rarity level of the loot pool
++0
+/ Weapons [Weight, Name, Value, Damage, Attack Speed]
+>WEAPON
+10 Rock 1 2 1
+5 Stick 2 3 2
+2 Flint 5 5 2
+1 Obsidian 9 9 3
+3 Vine 4 3 4
+>WEAPON TRAITS
+3 Sharp
+6 Dull
+2 Blunt
+5 Pointy
+/ Armour [Weight, Name, Value, Defense]
+>ARMOUR
+5 Burlap_Gloves 3 3 GLOVES
+5 Burlap_Socks 4 4 BOOTS
+5 Burlap_Pants 5 5 PANTS
+5 Burlap_Shirt 6 6 SHIRT
+5 Burlap_Hat 7 7 HAT
+3 Wicker_Gloves 8 8 GLOVES
+3 Wicker_Shoes 9 9 BOOTS
+3 Wicker_Pants 10 10 PANTS
+3 Wicker_Shirt 11 11 SHIRT
+3 Wicker_Hat 12 12 HAT
+1 Leather_Gloves 13 14 GLOVES
+1 Leather_Shoes 14 13 BOOTS
+1 Leather_Pants 15 15 PANTS
+1 Leather_Shirt 16 16 SHIRT
+1 Leather_Hat 17 17 HAT
+>ARMOUR TRAITS
+5 Durable
+5 Fragile
+>UTILITY
+>UTILITY TRAITS
+/ + Inticates the rarity level of the loot pool
++10
+/ Weapons [Weight, Name, Value, Damage, Attack Speed]
+>WEAPON
+10 Staff_Of_Indecision 85 10 2
+>WEAPON TRAITS
+/ Armour [Weight, Name, Value, Defense]
+>ARMOUR
+>ARMOUR TRAITS
+/ Utility [Weight, Name, Value]
+>UTILITY
+5 Potion 10
+>UTILITY TRAITS
+5 💀__Poison
+5 ❤️__Health
