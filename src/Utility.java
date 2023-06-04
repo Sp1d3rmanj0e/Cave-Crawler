@@ -26,6 +26,6 @@ public class Utility extends Item
     
     public String toString()
     {
-        return super.getSpecialName() + "|💵  " + super.getValue();
+        return super.getSpecialName() + "|" + super.getValue() + "$";
     }
 }

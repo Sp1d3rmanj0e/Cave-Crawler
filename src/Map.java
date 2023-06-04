@@ -19,6 +19,7 @@ public class Map extends ConsoleProgram
     private int playerX;
     private int playerY;
     private int playerHealth = 100;
+    private int playerViewDist = 5;
     
     // Properties
     private int width;
@@ -325,7 +326,97 @@ public class Map extends ConsoleProgram
         
         return Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
     }
-    
+
+    // Contains the 16X7 (square technically) ascii design for each block in the map.
+    // Returns the layer asked for
+    private String getStructureLayer(int layer, MAP structure, boolean isPlayer, boolean isVisible)
+    {
+        String[] layers = new String[7];
+
+        switch(structure)
+        {
+            case FLOOR:
+            layers[0] = "                ";
+            layers[1] = "                ";
+            layers[2] = "                ";
+            layers[3] = "                ";
+            layers[4] = "                ";
+            layers[5] = "                ";
+            layers[6] = "                ";
+            break;
+            case CHEST:
+
+            layers[0] = "  ████████████  ";
+            layers[1] = " ██__________██ ";
+            layers[2] = " | |        | | ";
+            layers[3] = " | |________| | ";
+            layers[4] = " ████  ██  ████ ";
+            layers[5] = " █ |_█____█_| █ ";
+            layers[6] = " ██████████████ ";
+            break;
+            case WALL:
+            layers[0] = "████████████████";
+            layers[1] = "██            ██";
+            layers[2] = "██            ██";
+            layers[3] = "██            ██";
+            layers[4] = "██            ██";
+            layers[5] = "██            ██";
+            layers[6] = "████████████████";
+            break;
+            case DOOR:
+            layers[0] = "████████████████";
+            layers[1] = " ██          ██ ";
+            layers[2] = " ██   [===]  ██ ";
+            layers[3] = " ██       __ ██ ";
+            layers[4] = " ██          ██ ";
+            layers[5] = " ██          ██ ";
+            layers[6] = "███__________███";
+            break;
+            case ENEMY:
+            layers[0] = " ██          ██ ";
+            layers[1] = "  ██        ██  ";
+            layers[2] = "   ██      ██   ";
+            layers[3] = " █            █ ";
+            layers[4] = " █    _____   █ ";
+            layers[5] = "     ███████    ";
+            layers[6] = "    ███   ███   ";
+            break;
+            case SHOP:
+            layers[0] = "      █  █      ";
+            layers[1] = "    ████████    ";
+            layers[2] = "   █  █  █      ";
+            layers[3] = "    ███████     ";
+            layers[4] = "      █  █ █    ";
+            layers[5] = "   ████████     ";
+            layers[6] = "      █  █      ";
+            break;
+        }
+
+        if (!isVisible)
+        {
+            layers[0] = "░░░░░░░░░░░░░░░░";
+            layers[1] = "░░░░░░░░░░░░░░░░";
+            layers[2] = "░░░░░░░░░░░░░░░░";
+            layers[3] = "░░░░░░░░░░░░░░░░";
+            layers[4] = "░░░░░░░░░░░░░░░░";
+            layers[5] = "░░░░░░░░░░░░░░░░";
+            layers[6] = "░░░░░░░░░░░░░░░░";
+        }
+
+        else if (isPlayer)
+        {
+            layers[0] = "     ,          ";
+            layers[1] = "    (_0_        ";
+            layers[2] = "      W )       ";
+            layers[3] = "     /\"\\__      ";
+            layers[4] = "    |      .    ";
+            layers[5] = "   _|           ";
+            layers[6] = "                ";
+        }
+
+        return layers[layer-1];
+    }
+
     public void drawMap()
     {
         for (int i = 0; i < 30; i++)
@@ -333,41 +424,68 @@ public class Map extends ConsoleProgram
             System.out.println();
         }
         
-        for (int h = 0; h < height; h++) 
+        // This calculates the area that the player can see
+        // Given their current location and their view distance
+        int lowestViewY = Math.max(0, playerY - playerViewDist);
+        int highestViewY = Math.min(height, playerY + playerViewDist);
+        int lowestViewX = Math.max(0, playerX - playerViewDist);
+        int highestViewX = Math.min(width, playerX + playerViewDist);
+
+        // This will use another function called getStructureLayer(int layer)
+        // Structures will be 16 X 7 (technically a square), but we can only draw one line at a time,
+        // so it will return only the line we are currently at
+        for (int h = lowestViewY; h < highestViewY; h++) 
+        {
+            // Loop through each height 7 times to get each layer drawn on the terminal
+            for (int layer = 1; layer <= 7; layer++) 
+            {
+                for (int w = lowestViewX; w < highestViewX; w++) {
+
+                    System.out.print(getStructureLayer(layer, mapTiles[w][h], ((h == playerY)&& (w == playerX)), mapVisibility[w][h]));
+                }
+                System.out.println();
+            }
+
+            System.out.println();
+        }
+
+        /*
+        for (int h = lowestViewY; h < highestViewY; h++) 
         {
             
-            for (int w = 0; w < width; w++) 
+            for (int w = lowestViewX; w < highestViewX; w++) 
             {
                 if ((h == playerY) && (w == playerX))
                 {
-                    System.out.print("R");
+                    System.out.print("R ");
                 }
                 else if (mapVisibility[w][h])
                 {
                     switch (mapTiles[w][h])
                     {
-                        case FLOOR: System.out.print("W");
+                        case FLOOR: System.out.print("  ");
                             break;
-                        case WALL: System.out.print("B");
+                        case WALL: System.out.print("██");
                             break;
-                        case CHEST: System.out.print("Y");
+                        case CHEST: System.out.print("Y ");
                             break;
-                        case ENEMY: System.out.print("G");
+                        case ENEMY: System.out.print("G ");
                             break;
-                        case DOOR: System.out.print("P");
+                        case DOOR: System.out.print("P ");
                             break;
-                        case SHOP: System.out.print("B");
+                        case SHOP: System.out.print("B ");
                             break;
                         default: System.out.print(String.valueOf(mapTiles[w][h]));
                     }
                 }
                 else
                 {
-                    System.out.print("X");
+                    System.out.print("░░");
                 }
             }
             System.out.println();
         }
+        */
     }
     
 }

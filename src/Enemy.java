@@ -42,7 +42,7 @@ public class Enemy extends ConsoleProgram
             Object[] enemy = new Object[8];
             ArrayList<String> sprite = new ArrayList<String>();
 
-            objReader = new BufferedReader(new FileReader("RPGame/src/EnemyTable.txt"));
+            objReader = new BufferedReader(new FileReader("src/EnemyTable.txt"));
             String line;
 
             while((line = objReader.readLine()) != null)

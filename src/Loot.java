@@ -162,7 +162,7 @@ public class Loot extends ConsoleProgram
         try {
         String line;
         
-        objReader = new BufferedReader(new FileReader("RPGame/src/TraitTable.txt"));
+        objReader = new BufferedReader(new FileReader("src/TraitTable.txt"));
             
             // Variables to log a new trait
             String name = "noone";
@@ -254,7 +254,7 @@ public class Loot extends ConsoleProgram
             String category = ">EMPTY";
             
             String line;
-            objReader = new BufferedReader(new FileReader("RPGame/src/LootTable.txt"));
+            objReader = new BufferedReader(new FileReader("src/LootTable.txt"));
 
             while((line = objReader.readLine()) != null)
             {

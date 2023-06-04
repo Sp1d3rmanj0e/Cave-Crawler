@@ -25,7 +25,7 @@ public class Armour extends Item
     public String toString()
     {
         return super.getSpecialName() 
-            + "|💵  " + super.getValue() 
-            + "|🛡️  " + getDefense() + "|";
+            + "|" + super.getValue() + "$"
+            + "|DEF: " + getDefense() + "|";
     }
 }

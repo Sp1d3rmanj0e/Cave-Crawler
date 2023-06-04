@@ -26,8 +26,8 @@ public class Weapon extends Item
     public String toString()
     {
         return super.getSpecialName() 
-        + "|💵  " + super.getValue() 
-        + "|⚔️  " + getDamage() 
-        + "|⚡️  " + getAttackSpeed() + "|";
+        + "|" + super.getValue() + "$"
+        + "|ATK: " + getDamage() 
+        + "|SPD: " + getAttackSpeed() + "|";
     }
 }
