@@ -41,15 +41,22 @@ public class Enemy extends ConsoleProgram
             String category = ">EMPTY";
             Object[] enemy = new Object[8];
             ArrayList<String> sprite = new ArrayList<String>();
+            char commandToken;
 
             objReader = new BufferedReader(new FileReader("src/EnemyTable.txt"));
             String line;
 
             while((line = objReader.readLine()) != null)
             {
-                
                 // Get the command (if any)
-                char commandToken = line.charAt(0);
+                if (line.length() > 0)
+                {
+                    commandToken = line.charAt(0);
+                }
+                else
+                {
+                    commandToken = ' ';
+                }
                 
                 switch(commandToken)
                 {
@@ -122,7 +129,27 @@ public class Enemy extends ConsoleProgram
                                 //System.out.println("Adding weight");
                                 break;
                             case ">SPRITE":
-                                sprite.add(line);
+                                String addLine = "";
+
+                                // Only try and read the line if there is a line to read
+                                if (line.length() > 0)
+                                {
+                                    // Loop through every character in the line
+                                    for (int i = 0; i < line.length(); i++)
+                                    {
+                                        // Translate the letters into drawable ascii squares
+                                        switch(line.charAt(i))
+                                        {
+                                            case 'a': addLine += "█"; break;
+                                            case 'b': addLine += "▓"; break;
+                                            case 'c': addLine += "▒"; break;
+                                            case 'd': addLine += "░"; break;
+                                            case ' ': addLine += " "; break;
+                                            default: addLine += "Error";
+                                        }
+                                    }
+                                }
+                                sprite.add(addLine);
                                 //System.out.println("Adding sprite line");
                                 break;
                             case ">LIFE":

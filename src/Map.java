@@ -19,7 +19,7 @@ public class Map extends ConsoleProgram
     private int playerX;
     private int playerY;
     private int playerHealth = 100;
-    private int playerViewDist = 5;
+    private int playerViewDist = 4;
     
     // Properties
     private int width;
