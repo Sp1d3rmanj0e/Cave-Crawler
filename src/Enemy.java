@@ -43,6 +43,10 @@ public class Enemy extends ConsoleProgram
             ArrayList<String> sprite = new ArrayList<String>();
             char commandToken;
 
+            ArrayList<String> specialWeaponList = new ArrayList<String>();
+            ArrayList<String> specialArmourList = new ArrayList<String>();
+            ArrayList<String> specialUtilityList = new ArrayList<String>();
+
             objReader = new BufferedReader(new FileReader("src/EnemyTable.txt"));
             String line;
 
@@ -95,6 +99,12 @@ public class Enemy extends ConsoleProgram
                             case "=NEW_ENEMY": // Create a clean enemy array to fill with data
                                 enemy = new Object[8];
                                 sprite = new ArrayList<String>();
+
+                                // Wipe the drop items for new enemy
+                                specialWeaponList = new ArrayList<String>();
+                                specialArmourList = new ArrayList<String>();
+                                specialUtilityList = new ArrayList<String>();
+
                                 System.out.println("New enemy created");
                                 break;
                             case "=PUSH_ENEMY": // Save the enemy to the enemyList
@@ -104,6 +114,10 @@ public class Enemy extends ConsoleProgram
                                 // Add the sprite to the enemy
                                 enemy[SPRITE] = sprite;
                                 
+                                enemy[SPECIAL_DROP_WEAPON] = specialWeaponList;
+                                enemy[SPECIAL_DROP_ARMOUR] = specialArmourList;
+                                enemy[SPECIAL_DROP_UTILITY] = specialUtilityList;
+
                                 // Add the enemy to the enemyList equal to its weight
                                 for (int i = 0; i < (int)enemy[WEIGHT]; i++) {
                                     enemyTableList.add(enemy); // Add the enemy to the enemyList
@@ -165,15 +179,15 @@ public class Enemy extends ConsoleProgram
                                 //System.out.println("Adding Armour Penetration");
                                 break;
                             case ">SPECIAL_DROP_WEAPON": 
-                                enemy[SPECIAL_DROP_WEAPON] = line;
+                                specialWeaponList.add(line);
                                 //System.out.println("Adding special Item");
                                 break;
                             case ">SPECIAL_DROP_ARMOUR": 
-                                enemy[SPECIAL_DROP_ARMOUR] = line;
+                                specialArmourList.add(line);
                                 //System.out.println("Adding special Item");
                                 break;
                             case ">SPECIAL_DROP_UTILITY":
-                                enemy[SPECIAL_DROP_UTILITY] = line;
+                                specialUtilityList.add(line);
                                 //System.out.println("Adding special Item");
                                 break;
                         }
@@ -302,59 +316,68 @@ public class Enemy extends ConsoleProgram
             // Check if the enemy had a special weapon drop
             if (enemy[SPECIAL_DROP_WEAPON] != null)
             {
-                // Organized by [Percent Drop, Name, Value, Damage, Attack Speed]
-                String[] wStats = String.valueOf(enemy[SPECIAL_DROP_WEAPON]).split(" ");
-                
-                // Check if the enemy drops the item
-                int dropChance = Integer.parseInt(wStats[0]);
-                
-                if ((rand.nextInt(99)+1) <= dropChance)
+                for (String sWeapon : (ArrayList<String>)enemy[SPECIAL_DROP_WEAPON])
                 {
-                    Item special_drop_weapon = new Weapon(
-                        wStats[1],                      // Name
-                        Integer.parseInt(wStats[2]),    // Value
-                        Integer.parseInt(wStats[3]),    // Damage
-                        Integer.parseInt(wStats[4]));   // Attack Speed
-                        
-                    enemyLoot.add(special_drop_weapon);
+                    // Organized by [Percent Drop, Name, Value, Damage, Attack Speed]
+                    String[] wStats = String.valueOf(sWeapon).split(" ");
+                    
+                    // Check if the enemy drops the item
+                    int dropChance = Integer.parseInt(wStats[0]);
+                    
+                    if ((rand.nextInt(99)+1) <= dropChance)
+                    {
+                        Item special_drop_weapon = new Weapon(
+                            wStats[1],                      // Name
+                            Integer.parseInt(wStats[2]),    // Value
+                            Integer.parseInt(wStats[3]),    // Damage
+                            Integer.parseInt(wStats[4]));   // Attack Speed
+                            
+                        enemyLoot.add(special_drop_weapon);
+                    }
                 }
             }
             
             // Check if the enemy had a special armour drop
             if (enemy[SPECIAL_DROP_ARMOUR] != null)
             {
-                // Organized by [Percent Drop, Name, Value, Defense]
-                String[] aStats = String.valueOf(enemy[SPECIAL_DROP_ARMOUR]).split(" ");
-                
-                // Check if the enemy drops the item
-                int dropChance = Integer.parseInt(aStats[0]);
-                if ((rand.nextInt(99)+1) <= dropChance)
+                for (String sArmour : (ArrayList<String>)enemy[SPECIAL_DROP_ARMOUR])
                 {
-                    Item special_drop_armour = new Armour(
-                        aStats[1],                      // Name
-                        Integer.parseInt(aStats[2]),    // Value
-                        Integer.parseInt(aStats[3]),    // Defense
-                        aStats[4]);                     // ArmourType
-                        
-                    enemyLoot.add(special_drop_armour);
+                    // Organized by [Percent Drop, Name, Value, Defense]
+                    String[] aStats = String.valueOf(sArmour).split(" ");
+                    
+                    // Check if the enemy drops the item
+                    int dropChance = Integer.parseInt(aStats[0]);
+                    if ((rand.nextInt(99)+1) <= dropChance)
+                    {
+                        Item special_drop_armour = new Armour(
+                            aStats[1],                      // Name
+                            Integer.parseInt(aStats[2]),    // Value
+                            Integer.parseInt(aStats[3]),    // Defense
+                            aStats[4]);                     // ArmourType
+                            
+                        enemyLoot.add(special_drop_armour);
+                    }
                 }
             }
             
             // Check if the enemy had a special utility drop
             if (enemy[SPECIAL_DROP_UTILITY] != null)
             {
-                // Organized by [Percent Drop, Name, Value]
-                String[] uStats = String.valueOf(enemy[SPECIAL_DROP_UTILITY]).split(" ");
-                
-                // Check if the enemy drops the item
-                int dropChance = Integer.parseInt(uStats[0]);
-                if ((rand.nextInt(99)+1) <= dropChance)
+                for (String sUtility : (ArrayList<String>)enemy[SPECIAL_DROP_UTILITY])
                 {
-                    Item special_drop_utility = new Utility(
-                        uStats[1],                      // Name
-                        Integer.parseInt(uStats[2]));   // Value
-                        
-                    enemyLoot.add(special_drop_utility);
+                    // Organized by [Percent Drop, Name, Value]
+                    String[] uStats = String.valueOf(sUtility).split(" ");
+                    
+                    // Check if the enemy drops the item
+                    int dropChance = Integer.parseInt(uStats[0]);
+                    if ((rand.nextInt(99)+1) <= dropChance)
+                    {
+                        Item special_drop_utility = new Utility(
+                            uStats[1],                      // Name
+                            Integer.parseInt(uStats[2]));   // Value
+                            
+                        enemyLoot.add(special_drop_utility);
+                    }
                 }
             }
         }
