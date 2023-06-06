@@ -445,8 +445,6 @@ public class Map extends ConsoleProgram
                 }
                 System.out.println();
             }
-
-            System.out.println();
         }
 
         /*
